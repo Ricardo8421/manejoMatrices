@@ -232,8 +232,9 @@ function checarCeros($arreglo, $m, $n){
         ↓</p>
         <?php
         $m = count($arregloSC);
-        imprimir($arregloSC, $m, $n);
+        imprimir($arregloSC, $m, $n, 0);
     }
+
 
     return $arregloSC;
 }

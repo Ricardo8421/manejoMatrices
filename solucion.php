@@ -109,6 +109,7 @@ for ($i=0; $i < $m; $i++) {
                 //Checar si hay filas en ceros
                 $matriz = checarCeros($matriz, $m, $n);
                 $m = count($matriz);
+
             }
 
             //Ultimo MDC para toda las filas
