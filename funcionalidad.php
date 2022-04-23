@@ -421,4 +421,137 @@ function inversa($arreglo, $m, $determinante){
     }
     return $arreglo;
 }
+
+//funcionalidad de combinaciones lineales (falta :c)
+function imprimirG($matriz, $m, $n, $bandera, $variables){
+    ?><br>
+    <table class="matriz w-50 text-center fs-3" align="center">
+        <?php
+        for ($i=0; $i < $m; $i++) { 
+            ?><tr>
+                <?php
+                for ($j=0; $j < $n; $j++) {
+                    ?><td class="elemento"><?php echo $matriz[$i][$j] ?></td><?php
+                }
+                if($bandera==0){
+                    ?><td class="elemento">| <?php 
+                    for ($j=0; $j < $m; $j++) { 
+                        if($variables[$i][$j]==1){
+                            echo "+";
+                        }elseif ($variables[$i][$j]==-1) {
+                            echo "-";
+                        }elseif ($variables[$i][$j]<0) {
+                            echo $variables[$i][$j];
+                        }elseif ($variables[$i][$j]>0) {
+                            echo "+".$variables[$i][$j];
+                        }
+                        if($variables[$i][$j]!=0){
+                            switch ($j) {
+                                case 0:
+                                    echo "x";
+                                    break;
+        
+                                case 1:
+                                    echo "y";
+                                    break;
+        
+                                case 2:
+                                    echo "z";
+                                    break;
+        
+                                case 3:
+                                    echo "w";
+                                    break;
+        
+                                case 4:
+                                    echo "v";
+                                    break;
+        
+                                case 5:
+                                    echo "u";
+                                    break;
+        
+                                case 6:
+                                    echo "t";
+                                    break;
+        
+                                case 7:
+                                    echo "s";
+                                    break;
+        
+                                case 8:
+                                    echo "r";
+                                    break;
+        
+                                case 9:
+                                    echo "q";
+                                    break;
+                            }
+                        }
+                    }
+                    ?></td><?php
+                }
+                ?>
+            </tr><?php
+        }
+        ?>
+    </table><br>
+<?php 
+} 
+
+function restarFilasAbajoG($arreglo, $m, $n, $col, $variables){
+    for ($i=1+$col; $i < $m; $i++) { 
+        $multiplo1 = $arreglo[$col][$col];
+        $multiplo2 = -$arreglo[$i][$col];
+        for ($j=0; $j < $m; $j++) { 
+            $variables[$i][$j] = $multiplo1*$variables[$i][$j] + $multiplo2*$variables[$col][$j];
+        }
+    }
+    return $variables;
+}
+
+function checarCerosG($arreglo, $m, $n, $variables){
+    $arregloSC = array(); // matriz sin [filas con solamente] ceros
+    for ($i=0; $i < $m; $i++) { 
+        if(isset(array_count_values($arreglo[$i])[0]) && isset(array_count_values($variables[$i])[0])){
+            $valoresRepetidos = array_count_values($arreglo[$i])[0];
+            $valoresRepetidosV = array_count_values($variables[$i])[0];
+            if($valoresRepetidos != count($arreglo[$i]) || $valoresRepetidosV != count($variables[$i])){
+                array_push($arregloSC, $arreglo[$i]);
+            }
+        }else{
+            array_push($arregloSC, $arreglo[$i]);
+        }
+    }
+
+    //Revisamos si se quito algo
+    if(count($arreglo)!=count($arregloSC)){
+        ?><p>|<br>
+        Quitando filas con solamente ceros<br>
+        ↓</p>
+        <?php
+        $m = count($arregloSC);
+        imprimirG($arregloSC, $m, $n, 0, $variables);
+    }
+
+
+    return $arregloSC;
+}
+
+function checarCerosV($arreglo, $m, $n, $variables){
+    $arregloSCV = array(); // matriz sin [filas con solamente] ceros
+    for ($i=0; $i < $m; $i++) { 
+        if(isset(array_count_values($arreglo[$i])[0]) && isset(array_count_values($variables[$i])[0])){
+            $valoresRepetidos = array_count_values($arreglo[$i])[0];
+            $valoresRepetidosV = array_count_values($variables[$i])[0];
+            if($valoresRepetidos != count($arreglo[$i]) || $valoresRepetidosV != count($variables[$i])){
+                array_push($arregloSCV, $variables[$i]);
+            }
+        }else{
+            array_push($arregloSCV, $variables[$i]);
+        }
+    }
+
+    return $arregloSCV;
+}
 ?>

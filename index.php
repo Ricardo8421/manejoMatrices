@@ -14,6 +14,7 @@
     <p class="lead">
         <a href="sistemas.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Sistema de ecuaciones</a>
         <a href="matrices.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Matriz cuadrada</a>
+        <a href="combinaciones.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Combinaciones lineales</a>
     </p>
 </body>
 </html>
