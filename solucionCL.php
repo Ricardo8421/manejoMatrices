@@ -186,33 +186,51 @@ $matrizBack=$matriz;
 
                 case 1:
 
-                    ?><br><h1>
+                    ?><br><h1>u = 
                         <?php
                         for ($i=0; $i < $m; $i++) { 
-                            ?>x<sub><?php echo $i+1 ?></sub> = <?php echo $matriz[$i][$n] ?><br><?php
+                            if($matriz[$i][$n]<0){
+                                echo $matriz[$i][$n];
+                            }else{
+                                echo "+".$matriz[$i][$n];
+                            }
+                            ?>v<sub><?php echo $i+1 ?></sub><?php
                         }
                         ?>
-                    </h1><?php
+                    </h1><br><?php
                     break;
                     
                 case 2:
 
-                    ?><br><h1>
+                    ?><br><h1>u = 
                         <?php
                         for ($i=0; $i < $m; $i++) { 
-                            ?>x<sub><?php echo $i+1 ?></sub> = <?php echo $matriz[$i][$n];
+                            ?>+v<sub><?php echo $i+1 ?></sub>(<?php echo $matriz[$i][$n];
                             for ($j=$m; $j < $n; $j++) { 
                                 if(-$matriz[$i][$j] >= 0){
                                     echo " +";
                                 }
-                                echo -$matriz[$i][$j]."λ<sub>".($n-$j)."</sub>";
+                                echo -$matriz[$i][$j]."λ<sub>".($n-$j)."</sub>)";
                             }
-                            echo "<br>";
                         }
                         for ($i=$m; $i < $n; $i++) { 
-                            ?>x<sub><?php echo $i+1 ?></sub> = λ<sub><?php echo ($n-$i) ?></sub><?php
+                            ?>+λ<sub><?php echo ($n-$i) ?></sub>v<sub><?php echo $i+1 ?></sub><?php
                             echo "<br>";
                         }
+                        // for ($i=0; $i < $m; $i++) { 
+                        //     ? x<sub><?php echo $i+1 ? </sub> = <?php echo $matriz[$i][$n];
+                        //     for ($j=$m; $j < $n; $j++) { 
+                        //         if(-$matriz[$i][$j] >= 0){
+                        //             echo " +";
+                        //         }
+                        //         echo -$matriz[$i][$j]."λ<sub>".($n-$j)."</sub>";
+                        //     }
+                        //     echo "<br>";
+                        // }
+                        // for ($i=$m; $i < $n; $i++) { 
+                        //     ? x<sub><?php echo $i+1 ? </sub> = λ<sub><?php echo ($n-$i) ? </sub><?php
+                        //     echo "<br>";
+                        // }
                         ?>
                     </h1><?php
                     break;
