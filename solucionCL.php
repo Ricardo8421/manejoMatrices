@@ -10,18 +10,6 @@ $n =floatval($_POST["n"]);
 
 $aaux=array();
 
-for ($i=0; $i < $n; $i++) { 
-    for ($j=0; $j < $m; $j++) { 
-        array_push($aaux, intval($_POST[$j."-".$i]));
-    }
-    array_push($aaux, intval($_POST["v".$i]));
-    array_push($matriz, $aaux);
-
-    $aaux=array();
-}
-
-$matrizBack=$matriz;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,19 +56,36 @@ $matrizBack=$matriz;
         <div class="cover-container d-flex w-75 p-3 mx-auto flex-column fs-4">
             <p>¿El vector pertenece a la combinación lineal?</p>
             <?php
+            $tmp = $m;
+            $m = $n;
+            $n = $tmp;
+            for ($i=0; $i < $m; $i++) { 
+                for ($j=0; $j < $n; $j++) { 
+                    array_push($aaux, intval($_POST[$j."-".$i]));
+                }
+                array_push($aaux, intval($_POST["v".$i]));
+                array_push($matriz, $aaux);
+                
+                $aaux=array();
+            }
+            $matrizBack=$matriz;
+            $mBack=$m;
+            $nBack=$n;
+            
             imprimir($matriz, $m, $n, 0);
 
             checarDecimales($matriz, $m, $n);
             
             $valoresRepetidos; 
+            $purosCeros;
             for ($j=0; $j < $m-1; $j++) {
                 //MDC para toda las filas
                 $divisores = conseguirDivisores($matriz);
 
                 //Revisar cambio algo
-                if(isset(array_count_values($divisores)[1])){
+                if(isset(array_count_values($divisores)[1]) && isset(array_count_values($divisores)[0])){
                     $valoresRepetidos = array_count_values($divisores)[1];
-                    if($valoresRepetidos != count($divisores)){
+                    if($valoresRepetidos != count($divisores) && $purosCeros==0){
                         imprimirDivisores($divisores);
                         $matriz = simplificarFilas($matriz, $divisores);
                         imprimir($matriz, $m, $n, 0);
@@ -245,14 +250,16 @@ $matrizBack=$matriz;
             <p>¿La combinación lineal genera a R<sup><?php echo $n ?></sup>?</p>
             <?php
             $matriz=$matrizBack;
-            for ($l=0; $l < $n; $l++) { 
-                $matriz[$l][$m]=0;
+            $m=$mBack;
+            $n=$nBack;
+            for ($l=0; $l < $m; $l++) { 
+                $matriz[$l][$n]=1;
             }
             $matrizBack=$matriz;
             //no pz si te vas a tener que aventar un metodo para poder manejar minimo literales lineales e imprimirlas ;-;
             $variables =array();
-            for ($l=0; $l < $n; $l++) { 
-                for ($ahmNoTengoMasVariables=0; $ahmNoTengoMasVariables < $n; $ahmNoTengoMasVariables++) { 
+            for ($l=0; $l < $m; $l++) { 
+                for ($ahmNoTengoMasVariables=0; $ahmNoTengoMasVariables < $m; $ahmNoTengoMasVariables++) { 
                     if($l==$ahmNoTengoMasVariables){
                         $aaux[$ahmNoTengoMasVariables]=1;
                     }else{
@@ -357,6 +364,9 @@ $matrizBack=$matriz;
             <p>¿La combinación lineal es linealmente independiente?</p>
             <?php
             $matriz=$matrizBack;
+            for ($l=0; $l < $m; $l++) { 
+                $matriz[$l][$n]=1;
+            }
 
             imprimir($matriz, $m, $n, 0);
 
@@ -437,16 +447,16 @@ $matrizBack=$matriz;
             ?>
         </div>
         <div class="cover-container d-flex w-75 p-3 mx-auto flex-column fs-4">
-            <p>¿La combinación lineal es base de R<sup><?php echo $n ?></sup>?</p>
+            <p>¿La combinación lineal es base de R<sup><?php echo $m ?></sup>?</p>
             <?php
             if($generador && $li){
-                echo"<br><h1>Ya que es generador de R<sup>".$n."</sup> y es linealmente independiente, entonces sí es base de R<sup>".$n."</sup></h1>";
+                echo"<br><h1>Ya que es generador de R<sup>".$m."</sup> y es linealmente independiente, entonces sí es base de R<sup>".$n."</sup></h1>";
             }elseif($generador){
-                echo"<br><h1>Ya que es linealmente dependiente, no es base de R<sup>".$n."</sup></h1>";
+                echo"<br><h1>Ya que es linealmente dependiente, no es base de R<sup>".$m."</sup></h1>";
             }elseif ($li) {
-                echo"<br><h1>Ya que no es generador de R<sup>".$n."</sup>, no es base de R<sup>".$n."</sup></h1>";
+                echo"<br><h1>Ya que no es generador de R<sup>".$m."</sup>, no es base de R<sup>".$m."</sup></h1>";
             }else{
-                echo"<br><h1>Ya que no es generador de R<sup>".$n."</sup> y es linealmente dependiente, no es base de R<sup>".$n."</sup></h1>";
+                echo"<br><h1>Ya que no es generador de R<sup>".$m."</sup> y es linealmente dependiente, no es base de R<sup>".$m."</sup></h1>";
             }
             ?>
         </div>

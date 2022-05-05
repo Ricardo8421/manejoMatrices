@@ -84,8 +84,8 @@ function generarCombinacion(){
         }
         formulario += ")";
         if(i!=n-1){
-            formulario += "<br><br>";
         }
+        formulario += "<br><br>";
     }
     formulario += ">";
     formulario += "<br><br>";

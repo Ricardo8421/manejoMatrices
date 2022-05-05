@@ -139,8 +139,10 @@ function conseguirDivisores($arreglo){
 
 function simplificarFilas($arreglo, $divisores){
     for ($i=0; $i < count($arreglo); $i++) { 
-        for ($j=0; $j < count($arreglo[$i]); $j++) { 
-            $arreglo[$i][$j] = $arreglo[$i][$j]/$divisores[$i];
+        if($divisores[$i]!=0){
+            for ($j=0; $j < count($arreglo[$i]); $j++) { 
+                $arreglo[$i][$j] = $arreglo[$i][$j]/$divisores[$i];
+            }
         }
     }
     return $arreglo;
