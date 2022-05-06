@@ -96,3 +96,28 @@ function generarCombinacion(){
 
     document.getElementById('identificador').innerHTML = formulario;
 }
+
+function generarNI(){
+    let m = document.forms["poner"]["m"].value;
+    let n = document.forms["poner"]["n"].value;
+
+    //hacer la cadena para insertar el formulario para poder dar la matriz
+    let formulario = "<form action='solucionNI.php' method='post'>";
+    formulario += "<input type='hidden' name='m' value='"+m+"'>";
+    formulario += "<input type='hidden' name='n' value='"+n+"'>";
+    
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            formulario += "<input type='number' name='"+i+"-"+j+"' class='me-2 rounded m-3' style='width: 5%!important;'>";
+        }
+        
+        formulario += "<br><br>";
+    }
+    
+    formulario += "<input type='submit' value='Encontrar' class='btn btn-lg btn-secondary fw-bold border-white bg-white text-black'>";
+    formulario += "</form>";
+    
+    //insertar codigo html en js
+    //reemplaza lo que ya tiene, asi que solo se necesita poner la cadena completa
+    document.getElementById('identificador').innerHTML = formulario;
+}

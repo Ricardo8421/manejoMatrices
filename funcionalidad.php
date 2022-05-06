@@ -152,10 +152,50 @@ function restarFilasAbajo($arreglo, $m, $n, $col, $bandera){
     if($bandera!=2){
         ?><p>|<br><?php
     }
-    for ($i=1+$col; $i < $m; $i++) { 
-        $multiplo1 = $arreglo[$col][$col];
-        $multiplo2 = -$arreglo[$i][$col];
-        if($bandera!=2){
+    $multiplo1 = $arreglo[$col][$col];
+    if($arreglo[$col][$col]!=0){
+        for ($i=1+$col; $i < $m; $i++) { 
+            $multiplo2 = -$arreglo[$i][$col];
+            if($bandera!=2){
+                if ($multiplo1!=1 and $multiplo1!=-1) {
+                    echo $multiplo1;
+                }elseif($multiplo1==-1){
+                    echo "-";
+                }
+                ?>F<sub><?php echo $i+1 ?></sub><?php
+                if($multiplo2>=0){
+                    echo "+";
+                }else if ($multiplo2==-1){
+                    echo "-";
+                }
+                if($multiplo2!=1 and $multiplo2!=-1){
+                    echo $multiplo2;
+                }
+                ?>F<sub><?php echo $col+1 ?></sub> -> F<sub><?php echo $i+1 ?></sub><br><?php
+            }
+            if($bandera==0){
+                $n=$n+1;
+            }
+            for ($j=0+$col; $j < $n; $j++) { 
+                if(isset($arreglo[$i][$j])){
+                    $arreglo[$i][$j] = $multiplo1*$arreglo[$i][$j] + $multiplo2*$arreglo[$col][$j];
+                }
+            }
+        }
+    }
+    if($bandera!=2){
+        ?>↓</p><?php
+    }
+    return $arreglo;
+}
+
+function restarFilasArriba($arreglo, $m, $n, $col){
+    $col = ($m-1)-$col;
+    $multiplo1 = $arreglo[$col][$col];
+    if($multiplo1!=0){
+        ?><p>|<br><?php
+        for ($i=$col-1; $i >= 0; $i--) { 
+            $multiplo2 = -$arreglo[$i][$col];
             if ($multiplo1!=1 and $multiplo1!=-1) {
                 echo $multiplo1;
             }elseif($multiplo1==-1){
@@ -170,47 +210,13 @@ function restarFilasAbajo($arreglo, $m, $n, $col, $bandera){
             if($multiplo2!=1 and $multiplo2!=-1){
                 echo $multiplo2;
             }
-            ?>F<sub><?php echo $col+1 ?></sub> -> F<sub><?php echo $i+1 ?></sub><br><?php
+            ?>F<sub><?php echo $col+1 ?></sub><br><?php
+            for ($j=$n; $j >= 0; $j--) { 
+                $arreglo[$i][$j] = $multiplo1*$arreglo[$i][$j] + $multiplo2*$arreglo[$col][$j];
+            }
         }
-        if($bandera==0){
-            $n=$n+1;
-        }
-        for ($j=0+$col; $j < $n; $j++) { 
-            $arreglo[$i][$j] = $multiplo1*$arreglo[$i][$j] + $multiplo2*$arreglo[$col][$j];
-        }
-    }
-    if($bandera!=2){
         ?>↓</p><?php
     }
-    return $arreglo;
-}
-
-function restarFilasArriba($arreglo, $m, $n, $col){
-    ?><p>|<br><?php
-    $col = ($m-1)-$col;
-    for ($i=$col-1; $i >= 0; $i--) { 
-        $multiplo1 = $arreglo[$col][$col];
-        $multiplo2 = -$arreglo[$i][$col];
-        if ($multiplo1!=1 and $multiplo1!=-1) {
-            echo $multiplo1;
-        }elseif($multiplo1==-1){
-            echo "-";
-        }
-        ?>F<sub><?php echo $i+1 ?></sub><?php
-        if($multiplo2>=0){
-            echo "+";
-        }else if ($multiplo2==-1){
-            echo "-";
-        }
-        if($multiplo2!=1 and $multiplo2!=-1){
-            echo $multiplo2;
-        }
-        ?>F<sub><?php echo $col+1 ?></sub><br><?php
-        for ($j=$n; $j >= 0; $j--) { 
-            $arreglo[$i][$j] = $multiplo1*$arreglo[$i][$j] + $multiplo2*$arreglo[$col][$j];
-        }
-    }
-    ?>↓</p><?php
     return $arreglo;
 }
 

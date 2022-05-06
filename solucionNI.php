@@ -1,8 +1,8 @@
 <?php
 include 'funcionalidad.php';
 
-ini_set('display_errors', 0);
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+// ini_set('display_errors', 0);
+// error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $matriz=array();
 $m =floatval($_POST["m"]);
@@ -12,14 +12,13 @@ $aaux=array(); //Arreglo auxiliar para agregar a la matriz
 
 for ($i=0; $i < $m; $i++) { 
     for ($j=0; $j < $n; $j++) { 
-        array_push($aaux, intval($_POST["x".($i+1)."-".($j+1)]));
+        array_push($aaux, intval($_POST[($i+1)."-".($j+1)]));
     }
-    array_push($aaux, intval($_POST["b".($i+1)]));
+    array_push($aaux, 0);
     array_push($matriz, $aaux);
 
     $aaux=array();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +68,7 @@ for ($i=0; $i < $m; $i++) {
             imprimir($matriz, $m, $n, 0);
 
             checarDecimales($matriz, $m, $n);
-
+            
             $arreglox=array();
             for ($i=0; $i < $n; $i++) { 
                 array_push($arreglox, $i+1);
@@ -118,8 +117,8 @@ for ($i=0; $i < $m; $i++) {
                 }
                 $valoresRepetidos=0;
             }
-            
-            $valoresRepetidos; 
+
+
             for ($j=0; $j < $m-1; $j++) {
                 //MDC para toda las filas
                 $divisores = conseguirDivisores($matriz);
@@ -183,6 +182,7 @@ for ($i=0; $i < $m; $i++) {
             //El rango de A es m-rangoN
             //El rango de A* es m
             $inter = 0; //interpretacion
+            $pl=0;
             if($m != ($m-$rangoN)){
                 echo "<br><h1>No hay soluciones</h1>";
                 $inter = 3;
@@ -192,6 +192,7 @@ for ($i=0; $i < $m; $i++) {
             }else{
                 echo "<br><h1>Tiene infinidad de soluciones</h1><br>";
                 echo "<p>P=# variables - R(A) = ".$n." - ".$m." = ".($n-$m)."</p>";
+                $pl=($n-$m);
                 $inter = 2;
             }
 
@@ -224,20 +225,19 @@ for ($i=0; $i < $m; $i++) {
 
             }
 
-            // //Gauss-Jordan para arriba
+            //Si se movieron los subindices se tiene que imprimir de manera diferente
+            //en el for hacer que se tomen en cuenta los indices de arreglo x y si es menor al que se tiene actualmente se le ponga lamnda y ya
+            $vectoresNulos=array();
+            $aaux=array();
             switch ($inter) {
                 case 3:
                     break;
 
                 case 1:
-
-                    ?><br><h1>
-                        <?php
-                        for ($i=0; $i < $m; $i++) { 
-                            ?>x<sub><?php echo $i+1 ?></sub> = <?php echo $matriz[$i][$n] ?><br><?php
-                        }
-                        ?>
-                    </h1><?php
+                    for ($i=0; $i < $m; $i++) { 
+                        array_push($aaux, $matriz[$i][$n]);
+                    }
+                    array_push($vectoresNulos, $aaux);
                     break;
                     
                 case 2:
@@ -246,37 +246,74 @@ for ($i=0; $i < $m; $i++) {
                         $contador=0;
                         for ($i=0; $i < $m; $i++) { 
                             if($arreglox[$contador]==$i+1){
-                                ?>x<sub><?php echo $i+1 ?></sub> = <?php 
-                                echo $matriz[$contador][$n];
                                 for ($j=$m; $j < $n; $j++) {
-                                    if($matriz[$i][$j]!=0){
-                                        if(-$matriz[$i][$j] >= 0){
-                                            echo " +";
-                                        }
-                                        echo -$matriz[$i][$j]."λ<sub>".($n-$j)."</sub>";
-                                    }
+                                    array_push($aaux, -$matriz[$i][$j]);
                                 }
-                                echo "<br>";
+                                array_push($vectoresNulos, $aaux);
+                                $aaux=array();
                                 $contador++;
                             }else{
-                                ?>x<sub><?php echo $i+1 ?></sub> = λ<sub><?php echo $n-$m ?></sub><br><?php 
                                 $m++;
+                                for ($j=0; $j < $n-$m-1; $j++) { 
+                                    array_push($aaux, 0);
+                                }
+                                array_push($aaux, 1);
+                                array_push($vectoresNulos, $aaux);
+                                $aaux=array();
                             }
                         }
-                        for ($i=$m; $i < $n; $i++) { 
-                            ?>x<sub><?php echo $i+1 ?></sub> = λ<sub><?php echo ($n-$i) ?></sub><?php
-                            echo "<br>";
+                        for ($i=$m; $i < $n; $i++) {
+                            for ($j=0; $j < $pl; $j++) { 
+                                if($i-$m==$j){
+                                    array_push($aaux, 1);
+                                }else{
+                                    array_push($aaux, 0);
+                                }
+                            }
+                            array_push($vectoresNulos, $aaux);
+                            $aaux=array();
                         }
                         ?>
-                    </h1><?php
+                    </h1>
+                    <?php
                     break;
                         
                 default:
                     echo "<p>Hubo un error</p>";
                     break;
             }
-
-            ?>
+            ?><br>
+            <h1>El espacio nulo de la matriz es: <
+            <?php
+            for ($i=0; $i < $pl; $i++) {
+                echo "("; 
+                for ($j=0; $j < $n; $j++) { 
+                    if(isset($vectoresNulos[$j][$i])){
+                        echo $vectoresNulos[$j][$i];
+                    }else{
+                        echo "0";
+                    }
+                    if($j!=$n-1){
+                        echo ", ";
+                    }
+                }
+                echo ")";
+                if($i!=$pl-1){
+                    echo ", ";
+                }
+            }
+            if($pl==0){
+                echo "<(";
+                for ($i=0; $i < $n; $i++) { 
+                    echo "0";
+                    if($i!=$n-1){
+                        echo ", ";
+                    }
+                }
+                echo ")>";
+            }
+            ?> >
+            </h1>
         </div>
     </body>
 </html>

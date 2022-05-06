@@ -9,12 +9,14 @@
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark row w-100">
     <div class="cover-container d-flex w-75 p-3 mx-auto flex-column fs-4">
-        <h1>Bienvenido, ingrese la entrada en la que desea trabajar</h1>
+        <h1>Bienvenido, elija la opción que desee</h1>
     </div>
     <p class="lead">
-        <a href="sistemas.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Sistema de ecuaciones</a>
-        <a href="matrices.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Matriz cuadrada</a>
+        <a href="sistemas.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Solución de sistema de ecuaciones</a>
+        <a href="matrices.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Operaciones con matrices cuadradas</a>
         <a href="combinaciones.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Combinaciones lineales</a>
+        <a href="nuim.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Nulidad e imagen</a>
+        <a href="cambiobase.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Cambio de base</a>
     </p>
 </body>
 </html>
