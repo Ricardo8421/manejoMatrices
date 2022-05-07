@@ -331,16 +331,16 @@ for ($i=0; $i < $m; $i++) {
             <h1>
                 Así se requieren <?php echo $n-$pl ?> vectores linealmente independientes para generar la imagen de A, los cuales son:
                 <<?php
-                for ($i=0; $i < ($n-$pl); $i++) { 
+                for ($i=0; $i < $n; $i++) { 
                     echo "(";
-                    for ($j=0; $j < $n; $j++) { 
-                        echo $matrizB[$i][$j];
-                        if($j!=$n-1){
+                    for ($j=0; $j < ($n-$pl); $j++) { 
+                        echo $matrizB[$j][$i];
+                        if($j!=($n-$pl)-1){
                             echo ", ";
                         }
                     }
                     echo ")";
-                    if($i!=$m-1){
+                    if($i!=$n-1){
                         echo ", ";
                     }
                 }
