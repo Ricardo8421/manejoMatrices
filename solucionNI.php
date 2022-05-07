@@ -66,6 +66,11 @@ for ($i=0; $i < $m; $i++) {
             <p>Solución:</p>
             <?php
             imprimir($matriz, $m, $n, 0);
+            $matrizB=$matriz;
+            $indicesFM=array();
+            for ($i=0; $i < $m; $i++) { 
+                array_push($indicesFM, $i);
+            }
 
             checarDecimales($matriz, $m, $n);
             
@@ -141,6 +146,7 @@ for ($i=0; $i < $m; $i++) {
                     if($indices[$k] != $k){
                         imprimirCambio($indices);
                         $matriz = ordenarConIndices($matriz, $indices);
+                        $indicesFM = ordenarConIndices($indicesFM, $indices);
                         imprimir($matriz, $m, $n, 0);
                         break;
                     }
@@ -303,17 +309,47 @@ for ($i=0; $i < $m; $i++) {
                 }
             }
             if($pl==0){
-                echo "<(";
+                echo "(";
                 for ($i=0; $i < $n; $i++) { 
                     echo "0";
                     if($i!=$n-1){
                         echo ", ";
                     }
                 }
-                echo ")>";
+                echo ")";
             }
             ?> >
             </h1>
+
+            <h2>
+                <br>
+                Para conocer la dimensión de la imágen se sigue el teorema de rango-nulidad:
+                <br>
+                Dim(Im(A)) = n - Dim(Nu(A)) = <?php echo $n ?> - <?php echo $pl ?> = <?php echo $n-$pl ?>
+                <br><br>
+            </h2>
+            <h1>
+                Así se requieren <?php echo $n-$pl ?> vectores linealmente independientes para generar la imagen de A, los cuales son:
+                <<?php
+                for ($i=0; $i < ($n-$pl); $i++) { 
+                    echo "(";
+                    for ($j=0; $j < $n; $j++) { 
+                        echo $matrizB[$i][$j];
+                        if($j!=$n-1){
+                            echo ", ";
+                        }
+                    }
+                    echo ")";
+                    if($i!=$m-1){
+                        echo ", ";
+                    }
+                }
+                ?>>
+                <br>
+            </h1>
+            <h2>
+                Con base a las filas restantes después del proceso de Gauss Jordan
+            </h2>
         </div>
     </body>
 </html>
