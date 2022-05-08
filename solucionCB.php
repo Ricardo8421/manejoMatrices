@@ -128,6 +128,7 @@ $determinanteB2=determinante($matrizB2, $n);
                     Siendo que las 2 combinaciones lineales son bases, podemos hacer las matrices de cambio de base:<br>
                     Haciendo la primera matriz de cambio de base de una base canonica a &beta;1:
                 </h2><?php
+                $cambioB1C=array();
                 for ($l=0; $l < $n; $l++) {
                     $matrizBack=array();
                     for ($i=0; $i < $m; $i++) { 
@@ -249,9 +250,18 @@ $determinanteB2=determinante($matrizB2, $n);
                         $matrizBack = simplificarFilas($matrizBack, $divisores);
                         imprimir($matrizBack, $m, $n, 0);
         
-                        ?><br><h1>u = 
+                        ?><br><h1>(<?php
+                        for ($i=0; $i < $n; $i++) { 
+                            echo $matrizBack[$l][$i];
+                            if($i!=$n-1){
+                                echo ", ";
+                            }
+                        }
+                        ?>) = 
                             <?php
+                            $araux=array();
                             for ($i=0; $i < $m; $i++) { 
+                                array_push($araux, $matrizBack[$i][$n]);
                                 if($matrizBack[$i][$n]<0){
                                     echo $matrizBack[$i][$n];
                                 }else{
@@ -259,11 +269,205 @@ $determinanteB2=determinante($matrizB2, $n);
                                 }
                                 ?>v<sub><?php echo $i+1 ?></sub><?php
                             }
+                            array_push($cambioB1C, $araux);
                             ?>
                         </h1><br><?php
                     }
                     $matrizBack=$matrizB1;
                 }
+                ?>
+                <br><br><br>
+                <h1>Así A<span class="supsub"><sup>Can</sup><sub>&beta;1</sub></span>=<br></h1>
+                <?php
+                imprimir($cambioB1C, $m, $n, 1);
+                ?><br><br><h1>Entonces el vector resulta y<sub>&beta;1</sub>= (<?php
+                $vectorB1=array();
+                for ($i=0; $i < $n; $i++) { 
+                    $valor=0;
+                    for ($j=0; $j < $n; $j++) { 
+                        $valor+=$vector[$j]*$cambioB1C[$i][$j];
+                    }
+                    array_push($vectorB1, $valor);
+                }
+                
+                for ($i=0; $i < $n; $i++) { 
+                    echo $vectorB1[$i];
+                    if($i!=$n-1){
+                        echo ", ";
+                    }
+                }
+                ?>)</h1><br><br>
+                <h2>Haciendo la segunda matriz de cambio de base de una base &beta;1 a &beta;2:</h2>
+                <?php
+                $cambioB2B1=array();
+                for ($l=0; $l < $n; $l++) {
+                    $matrizBack=array();
+                    for ($i=0; $i < $m; $i++) { 
+                        for ($j=0; $j < $n; $j++) { 
+                            array_push($aaux, $matrizB2[$i][$j]);
+                        }
+                        array_push($aaux, $matrizB1[$i][$l]);
+                        array_push($matrizBack, $aaux);
+                        
+                        $aaux=array();
+                    }
+                    
+                    // imprimir($matrizBack, $m, $n, 0);
+        
+                    checarDecimales($matrizBack, $m, $n);
+                    
+                    $valoresRepetidos; 
+                    $purosCeros;
+                    for ($j=0; $j < $m-1; $j++) {
+                        //MDC para toda las filas
+                        $divisores = conseguirDivisores($matrizBack);
+        
+                        //Revisar cambio algo
+                        if(isset(array_count_values($divisores)[1]) && isset(array_count_values($divisores)[0])){
+                            $valoresRepetidos = array_count_values($divisores)[1];
+                            if($valoresRepetidos != count($divisores) && $purosCeros==0){
+                                // imprimirDivisores($divisores);
+                                $matrizBack = simplificarFilas($matrizBack, $divisores);
+                                // imprimir($matrizBack, $m, $n, 0);
+                            }
+                        }
+                        
+                        //algoritmo de ordenamiento en base a la columna
+                        $indices = conseguirIndices($matrizBack, $j); //El segundo parametro avanza conforme se tomen en cuenta menos filas
+                        
+                        //Revisar si cambio algo
+                        for ($k=0; $k < count($indices); $k++) { 
+                            if($indices[$k] != $k){
+                                // imprimirCambio($indices);
+                                $matrizBack = ordenarConIndices($matrizBack, $indices);
+                                // imprimir($matrizBack, $m, $n, 0);
+                                break;
+                            }
+                        }
+                        
+                        //Gauss-Jordan
+                        $matrizBack = restarFilasAbajo($matrizBack, $m, $n, $j, 3);  //El segundo parametro avanza conforme se tomen en cuenta las filas
+                        // imprimir($matrizBack, $m, $n, 0);
+                        
+                        //Checar si hay filas en ceros
+                        $matrizBack = checarCeros($matrizBack, $m, $n);
+                        $m = count($matrizBack);
+        
+                    }
+        
+                    //Ultimo MDC para toda las filas
+                    $divisores = conseguirDivisores($matrizBack);
+        
+                    //Revisar cambio algo
+                    $valoresRepetidos = 0;
+                    if(isset(array_count_values($divisores)[1])){
+                        $valoresRepetidos = array_count_values($divisores)[1];
+                    }
+                    if($valoresRepetidos != count($divisores)){
+                        // imprimirDivisores($divisores);
+                        $matrizBack = simplificarFilas($matrizBack, $divisores);
+                        // imprimir($matriz, $m, $n, 0);
+                    }
+                    
+                    //Checamos el rango negativo
+                    $rangoN=0; //Rango negativo (para restar al rango de A* y obtener el rango de A)
+                    for ($i=0; $i < $m; $i++) { 
+                        if(isset(array_count_values($matrizBack[$i])[0])){
+                            $valoresRepetidos = array_count_values($matrizBack[$i])[0];
+                            if($valoresRepetidos == count($matrizBack[$i])-1 and $matrizBack[$i][$n]!=0){
+                                $rangoN++;
+                            }
+                        }
+                    }
+                    
+                    //Comparar rangos para definir si no hay soluciones, hay una unica solucion o tiene infinidad de soluciones
+                    //El rango de A es m-rangoN
+                    //El rango de A* es m
+                    $inter = 0;
+                    if($m != ($m-$rangoN)){
+                        echo "<br><h1>Algo salio mal</h1>";
+                        $inter = 3;
+                    }elseif($m == $n){
+                        $inter = 1;
+                    }else{
+                        echo "<br><h1>Algo salio mal</h1><br>";
+                        $inter = 2;
+                    }
+                    if($inter == 1){
+                        // imprimir($matriz, $m, $n, 0);
+                        for ($i=0; $i < $m-1; $i++) { 
+                            $matrizBack = restarFilasArribaSI($matrizBack, $m, $n, $i);
+                            // imprimir($matriz, $m, $n, 0);
+                            
+                            //MDC para toda las filas
+                            $divisores = conseguirDivisores($matrizBack);
+                            
+                            //Revisar cambio algo
+                            $valoresRepetidos = array_count_values($divisores)[1];
+                            if($valoresRepetidos != count($divisores)){
+                                // imprimirDivisores($divisores);
+                                $matrizBack = simplificarFilas($matrizBack, $divisores);
+                                // imprimir($matriz, $m, $n, 0);
+                            }
+                        }
+                        
+                        imprimir($matrizBack, $m, $n, 0);
+                        $divisores = array();
+                        for ($i=0; $i < $m; $i++) { 
+                            array_push($divisores, $matrizBack[$i][$i]);
+                        }
+        
+                        imprimirDivisores($divisores);
+                        $matrizBack = simplificarFilas($matrizBack, $divisores);
+                        imprimir($matrizBack, $m, $n, 0);
+        
+                        ?><br><h1>(<?php
+                        for ($i=0; $i < $n; $i++) { 
+                            echo $matrizBack[$l][$i];
+                            if($i!=$n-1){
+                                echo ", ";
+                            }
+                        }
+                        ?>) = 
+                            <?php
+                            $araux=array();
+                            for ($i=0; $i < $m; $i++) { 
+                                array_push($araux, $matrizBack[$i][$n]);
+                                if($matrizBack[$i][$n]<0){
+                                    echo $matrizBack[$i][$n];
+                                }else{
+                                    echo "+".$matrizBack[$i][$n];
+                                }
+                                ?>v<sub><?php echo $i+1 ?></sub><?php
+                            }
+                            array_push($cambioB2B1, $araux);
+                            ?>
+                        </h1><br><?php
+                    }
+                    $matrizBack=$matrizB2;
+                }
+                ?>
+                <br><br><br>
+                <h1>Así A<span class="supsub"><sup>&beta;1</sup><sub>&beta;2</sub></span>=<br></h1>
+                <?php
+                imprimir($cambioB2B1, $m, $n, 1);
+                ?><br><br><h1>Entonces el vector resulta y<sub>&beta;2</sub>= (<?php
+                $vectorB2=array();
+                for ($i=0; $i < $n; $i++) { 
+                    $valor=0;
+                    for ($j=0; $j < $n; $j++) { 
+                        $valor+=$vectorB1[$j]*$cambioB2B1[$i][$j];
+                    }
+                    array_push($vectorB2, $valor);
+                }
+                
+                for ($i=0; $i < $n; $i++) { 
+                    echo $vectorB2[$i];
+                    if($i!=$n-1){
+                        echo ", ";
+                    }
+                }
+                ?>)</h1><br><br><?php
             }else if($determinanteB1==0){
                 ?><h1>La primer combinación lineal no es una base, por lo tanto no se puede hacer la matriz de cambio de base</h1><?php
             }else if($determinanteB2==0){
@@ -272,10 +476,6 @@ $determinanteB2=determinante($matrizB2, $n);
                 ?><h1>Ninguna combinación lineal es una base, por lo tanto no se puede hacer la matriz de cambio de base</h1><?php
             }
             ?>
-
-            <!-- Sugerencia de uso -->
-            <br><br>
-            <h2>Veamos si sigue funcionando: A<span class="supsub"><sup>&beta;1</sup><sub>&beta;2</sub></span> owo</h2>
         </div>
     </body>
 </html>
