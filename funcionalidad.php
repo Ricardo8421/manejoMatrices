@@ -149,14 +149,14 @@ function simplificarFilas($arreglo, $divisores){
 }
 
 function restarFilasAbajo($arreglo, $m, $n, $col, $bandera){
-    if($bandera!=2){
+    if($bandera!=2 and $bandera!=3){
         ?><p>|<br><?php
     }
     $multiplo1 = $arreglo[$col][$col];
     if($arreglo[$col][$col]!=0){
         for ($i=1+$col; $i < $m; $i++) { 
             $multiplo2 = -$arreglo[$i][$col];
-            if($bandera!=2){
+            if($bandera!=2 and $bandera!=3){
                 if ($multiplo1!=1 and $multiplo1!=-1) {
                     echo $multiplo1;
                 }elseif($multiplo1==-1){
@@ -173,7 +173,7 @@ function restarFilasAbajo($arreglo, $m, $n, $col, $bandera){
                 }
                 ?>F<sub><?php echo $col+1 ?></sub> -> F<sub><?php echo $i+1 ?></sub><br><?php
             }
-            if($bandera==0){
+            if($bandera==0 or $bandera==3){
                 $n=$n+1;
             }
             for ($j=0+$col; $j < $n; $j++) { 
@@ -183,7 +183,7 @@ function restarFilasAbajo($arreglo, $m, $n, $col, $bandera){
             }
         }
     }
-    if($bandera!=2){
+    if($bandera!=2 and $bandera!=3){
         ?>↓</p><?php
     }
     return $arreglo;
@@ -216,6 +216,20 @@ function restarFilasArriba($arreglo, $m, $n, $col){
             }
         }
         ?>↓</p><?php
+    }
+    return $arreglo;
+}
+
+function restarFilasArribaSI($arreglo, $m, $n, $col){
+    $col = ($m-1)-$col;
+    $multiplo1 = $arreglo[$col][$col];
+    if($multiplo1!=0){
+        for ($i=$col-1; $i >= 0; $i--) { 
+            $multiplo2 = -$arreglo[$i][$col];
+            for ($j=$n; $j >= 0; $j--) { 
+                $arreglo[$i][$j] = $multiplo1*$arreglo[$i][$j] + $multiplo2*$arreglo[$col][$j];
+            }
+        }
     }
     return $arreglo;
 }

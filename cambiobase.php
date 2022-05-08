@@ -27,11 +27,13 @@
 </style>
 <body class="d-flex h-100 text-center text-white bg-dark row w-100">
     <div class="cover-container d-flex w-75 p-3 mx-auto flex-column fs-4">
-        <h1>En desarrollo unu</h1>
+        <form name="poner">
+            Cambiar de base un vector a 2 bases subconjunto de: R^<input class="me-2 rounded w-25" type="number" name="n" placeholder="n" min="2" max="10">
+            <br><br>
+            <input type="button" value="Generar entradas" onclick="generarCambioB()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black">
+        </form>
         <br><br>
-        <h2>
-            Permiso, voy a hacer pruebas: A<span class="supsub"><sup>&beta;1</sup><sub>&beta;2</sub></span> Y todavía puedo escribir :0
-        </h2>
     </div>
+    <div id="identificador" class="cover-container d-flex w-75 p-3 mx-auto flex-column fs-6"></div>
 </body>
 </html>

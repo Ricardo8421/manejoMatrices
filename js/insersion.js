@@ -40,6 +40,7 @@ function generarMatriz(){
     else{
         formulario = "Hubo un error, vuelva a intentarlo mas tarde"
         document.getElementById('identificador').innerHTML = formulario;
+        return;
     }
     
     formulario += "<input type='hidden' name='m' value='"+m+"'>";
@@ -119,5 +120,63 @@ function generarNI(){
     
     //insertar codigo html en js
     //reemplaza lo que ya tiene, asi que solo se necesita poner la cadena completa
+    document.getElementById('identificador').innerHTML = formulario;
+}
+
+function generarCambioB(){
+    let m = document.forms["poner"]["n"].value;
+    
+    let formulario = "";
+    formulario = "<form action='solucionCB.php' method='post'>";
+    
+    formulario += "<input type='hidden' name='n' value='"+m+"'>";
+    
+    formulario += "<h2>&beta;1=<br></h2>{";
+    for (let i = 0; i < m; i++) {
+        formulario += "(";
+        for (let j = 0; j < m; j++) {
+            formulario += "<input type='number' name='1-"+i+"-"+j+"' class='me-2 rounded m-3' style='width: 5%!important;'>";
+            if(j!=m-1){
+                formulario += ", ";
+            }
+        }
+        formulario += ")";
+        if(i!=m-1){
+            formulario += ", ";
+            formulario += "<br><br>";
+        }
+    }
+    formulario += "}<br><br>";
+    
+    formulario += "<h2>&beta;2=<br></h2>{";
+    for (let i = 0; i < m; i++) {
+        formulario += "(";
+        for (let j = 0; j < m; j++) {
+            formulario += "<input type='number' name='2-"+i+"-"+j+"' class='me-2 rounded m-3' style='width: 5%!important;'>";
+            if(j!=m-1){
+                formulario += ", ";
+            }
+        }
+        formulario += ")";
+        if(i!=m-1){
+            formulario += ", ";
+            formulario += "<br><br>";
+        }
+    }
+    formulario += "}<br><br>";
+    
+    formulario += "<h2>Vector (en base canonica):<br></h2>(";
+    for (let i = 0; i < m; i++) {
+        formulario += "<input type='number' name='v-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;'>";
+        if(i!=m-1){
+            formulario += ", ";
+        }
+    }
+    formulario += ")<br><br>";
+
+    //Agregamos botones para hacer operaciones, en este caso necestiamos A^2, |A|, |A^a| (este una vez que se calcule) y A^-1
+    formulario += "<input type='submit' value='Resolver' class='btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-3'>";
+    formulario += "</form>";
+    
     document.getElementById('identificador').innerHTML = formulario;
 }
