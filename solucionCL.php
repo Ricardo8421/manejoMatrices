@@ -365,7 +365,7 @@ $aaux=array();
             <?php
             $matriz=$matrizBack;
             for ($l=0; $l < $m; $l++) { 
-                $matriz[$l][$n]=1;
+                $matriz[$l][$n]=0;
             }
 
             imprimir($matriz, $m, $n, 0);
@@ -438,6 +438,7 @@ $aaux=array();
             $li = false;
             if($m == $n){
                 echo "<br><h1>Hay solucion unica</h1><br>";
+                // echo $m." y ".$n;
                 echo "<br><h1>Por lo tanto  la combinación lineal es linealmente independiente</h1><br>";
                 $li=true;
             }else{

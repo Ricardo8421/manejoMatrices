@@ -6,6 +6,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $matriz=array();
 $m =floatval($_POST["m"]);
+$mBack=$m;
 $n =floatval($_POST["n"]);
 
 $aaux=array(); //Arreglo auxiliar para agregar a la matriz
@@ -331,17 +332,27 @@ for ($i=0; $i < $m; $i++) {
             <h1>
                 Así se requieren <?php echo $n-$pl ?> vectores linealmente independientes para generar la imagen de A, los cuales son:
                 <<?php
-                for ($i=0; $i < $n; $i++) { 
-                    echo "(";
-                    for ($j=0; $j < ($n-$pl); $j++) { 
-                        echo $matrizB[$j][$i];
-                        if($j!=($n-$pl)-1){
-                            echo ", ";
+                for ($i=0; $i < ($n-$pl); $i++) { 
+                    $contador=0;
+                    for ($j=0; $j < $mBack; $j++) { 
+                        if($matrizB[$j][$i]==0){
+                            $contador++;
                         }
                     }
-                    echo ")";
-                    if($i!=$n-1){
-                        echo ", ";
+                    if($contador==$mBack){
+                        $n++;
+                    }else{
+                        echo "(";
+                        for ($j=0; $j < $mBack; $j++) { 
+                            echo $matrizB[$j][$i];
+                            if($j!=$mBack-1){
+                                echo ", ";
+                            }
+                        }
+                        echo ")";
+                        if($i!=($n-$pl)-1){
+                            echo ", ";
+                        }
                     }
                 }
                 ?>>

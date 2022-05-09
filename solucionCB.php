@@ -141,7 +141,8 @@ $determinanteB2=determinante($matrizB2, $n);
                         $aaux=array();
                     }
                     
-                    // imprimir($matrizBack, $m, $n, 0);
+                    imprimir($matrizBack, $m, $n, 0);
+                    echo "<p>↓</p>";
         
                     checarDecimales($matrizBack, $m, $n);
                     
@@ -312,7 +313,8 @@ $determinanteB2=determinante($matrizB2, $n);
                         $aaux=array();
                     }
                     
-                    // imprimir($matrizBack, $m, $n, 0);
+                    imprimir($matrizBack, $m, $n, 0);
+                    echo "<p>↓</p>";
         
                     checarDecimales($matrizBack, $m, $n);
                     
