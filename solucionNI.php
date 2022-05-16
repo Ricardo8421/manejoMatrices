@@ -330,37 +330,48 @@ for ($i=0; $i < $m; $i++) {
                 <br><br>
             </h2>
             <h1>
-                Así se requieren <?php echo $n-$pl ?> vectores linealmente independientes para generar la imagen de A, los cuales son:
-                <<?php
-                for ($i=0; $i < ($n-$pl); $i++) { 
-                    $contador=0;
-                    for ($j=0; $j < $mBack; $j++) { 
-                        if($matrizB[$j][$i]==0){
+                <?php
+                $limite=$n-$pl;
+                $vectoresImagen=array();
+                $contador=0;
+                for ($i=0; $i < $limite; $i++) { 
+                    $aaux=array();
+                    if(isset($matriz[$i][$i+$contador])){
+                        if($matriz[$i][$i+$contador]==0){
                             $contador++;
+                            $i--;
+                        }else{
+                            for ($j=0; $j < $mBack; $j++) { 
+                                array_push($aaux, $matrizB[$j][$i+$contador]);
+                            }
+                            array_push($vectoresImagen, $aaux);
                         }
                     }
-                    if($contador==$mBack){
-                        $n++;
-                    }else{
+                }
+                if(count($vectoresImagen)!=($n-$pl)){
+                    ?>No se puede generar un espacio imagen<?php
+                }else{
+                    ?>
+                    Así se requieren <?php echo $n-$pl ?> vectores linealmente independientes para generar la imagen de A, los cuales son:
+                    <<?php
+                    for ($i=0; $i < $n-$pl; $i++) { 
                         echo "(";
                         for ($j=0; $j < $mBack; $j++) { 
-                            echo $matrizB[$j][$i];
+                            echo $vectoresImagen[$i][$j];
                             if($j!=$mBack-1){
                                 echo ", ";
                             }
                         }
                         echo ")";
                         if($i!=($n-$pl)-1){
-                            echo ", ";
+                            echo", ";
                         }
                     }
+                    ?>><?php
                 }
-                ?>>
+                ?>
                 <br>
             </h1>
-            <h2>
-                Con base a las filas restantes después del proceso de Gauss Jordan
-            </h2>
         </div>
     </body>
 </html>
