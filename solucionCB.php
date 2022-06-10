@@ -1,8 +1,8 @@
 <?php
 include 'funcionalidad.php';
 
-ini_set('display_errors', 0);
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+// ini_set('display_errors', 0);
+// error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 $matrizB1=array();
 $matrizB2=array();
@@ -280,7 +280,15 @@ $determinanteB2=determinante($matrizB2, $n);
                 <br><br><br>
                 <h1>Así A<span class="supsub"><sup>Can</sup><sub>&beta;1</sub></span>=<br></h1>
                 <?php
-                imprimir($cambioB1C, $m, $n, 1);
+                $pImprimir=array();
+                for ($i=0; $i < count($cambioB1C); $i++) { 
+                    $araux=array();
+                    for ($j=0; $j < count($cambioB1C[$i]); $j++) { 
+                        array_push($araux, $cambioB1C[$j][$i]);
+                    }
+                    array_push($pImprimir, $araux);
+                }
+                imprimir($pImprimir, $m, $n, 1);
                 ?><br><br><h1>Entonces el vector resulta y<sub>&beta;1</sub>= (<?php
                 $vectorB1=array();
                 for ($i=0; $i < $n; $i++) { 
@@ -452,7 +460,15 @@ $determinanteB2=determinante($matrizB2, $n);
                 <br><br><br>
                 <h1>Así A<span class="supsub"><sup>&beta;1</sup><sub>&beta;2</sub></span>=<br></h1>
                 <?php
-                imprimir($cambioB2B1, $m, $n, 1);
+                $pImprimir=array();
+                for ($i=0; $i < count($cambioB2B1); $i++) { 
+                    $araux=array();
+                    for ($j=0; $j < count($cambioB2B1[$i]); $j++) { 
+                        array_push($araux, $cambioB2B1[$j][$i]);
+                    }
+                    array_push($pImprimir, $araux);
+                }
+                imprimir($pImprimir, $m, $n, 1);
                 ?><br><br><h1>Entonces el vector resulta y<sub>&beta;2</sub>= (<?php
                 $vectorB2=array();
                 for ($i=0; $i < $n; $i++) { 

@@ -576,4 +576,154 @@ function checarCerosV($arreglo, $m, $n, $variables){
 
     return $arregloSCV;
 }
+
+//Funcionalidad graficadora
+function dibujoh($puntosPares){
+    $puntos=array();
+    $alto=1000;
+    $ancho=$alto;
+
+    $mayorValor=0;
+    for ($i=0; $i < count($puntosPares); $i++) { 
+        if($mayorValor<abs($puntosPares[$i]->x)){
+            $mayorValor=abs($puntosPares[$i]->x);
+        }
+        if($mayorValor<abs($puntosPares[$i]->y)){
+            $mayorValor=abs($puntosPares[$i]->y);
+        }
+    }
+
+    //Conseguir la representacion de la coordenada en los ejes
+    $puntosPO=array();
+    $coordenadax=0;
+    $coordenaday=0;
+    $medio=$alto/2;
+    for ($i=0; $i < count($puntosPares); $i++) {
+        $coordenadax = ($puntosPares[$i]->x/$mayorValor)+1;
+        $coordenadax *= $medio;
+        $coordenadax += 50;
+        $coordenaday = 1-($puntosPares[$i]->y/$mayorValor);
+        $coordenaday *= $medio;
+        $coordenaday += 50;
+        array_push($puntosPO, new punto($coordenadax, $coordenaday));
+    }
+
+    // var_dump($puntosPO);
+    // echo "<br><br>";
+    $puntosPO=organizar($puntosPO);
+    // var_dump($puntosPO);
+
+    for ($i=0; $i < count($puntosPO); $i++) { 
+        array_push($puntos, $puntosPO[$i]->x);
+        array_push($puntos, $puntosPO[$i]->y);
+    }
+
+    $imagen = imagecreatetruecolor($alto+100, $ancho+100);
+    
+    $bgColor = imagecolorallocate($imagen, 33,37,41);
+    
+    imagefill($imagen, 0, 0, $bgColor);
+    
+    $coloh_imageh=imagecolorallocate($imagen, 255, 255, 255);
+    
+    //ejes
+    imageline($imagen, $ancho+100, ($alto/2)+50, 0, ($alto/2)+50, $coloh_imageh);
+    imageline($imagen, ($ancho/2)+50, $alto+100, ($ancho/2)+50, 0, $coloh_imageh);
+    
+    imagepolygon($imagen, $puntos, count($puntos)/2, $coloh_imageh);
+
+    ob_start();
+
+    imagepng($imagen);
+
+    $datos = ob_get_clean();
+
+    imagedestroy($imagen);
+    
+    return $datos;
+}
+
+class punto{
+    public $x;
+    public $y;
+    private $centro=NULL;
+
+    public function __construct(int $x, int $y){
+        $this->x=$x;
+        $this->y=$y;
+    }
+
+    public function setCentro($centro){
+        $this->centro=$centro;
+    }
+
+    public function getCentro(){
+        return $this->centro;
+    }
+
+    public function getAngle(){
+        return atan2($this->y-$this->centro->y, $this->x-$this->centro->x);
+    }
+
+    public function getDAC(){
+        return sqrt(pow($this->x-$this->centro->x, 2)+pow($this->y-$this->centro->y, 2));
+    }
+}
+
+function organizar($puntos){
+    $boolteado = false;
+
+    $centroidelongo=new punto(0, 0);
+
+    for ($i=0; $i < count($puntos); $i++) { 
+        $centroidelongo->x+=$puntos[$i]->x;
+        $centroidelongo->y+=$puntos[$i]->y;
+    }
+    $centroidelongo->x/=(count($puntos));
+    $centroidelongo->y/=(count($puntos));
+
+    for ($i=0; $i < count($puntos); $i++) { 
+        $puntos[$i]->setCentro($centroidelongo);
+    }
+
+    $organizar = "cmpBoolteado";
+
+    if(!$boolteado){
+        $organizar=$organizar."nt";
+    }
+
+    imprimirPuntos($puntos);
+    echo "<br><br>";
+    usort($puntos, $organizar);
+    imprimirPuntos($puntos);
+    echo "<br><br>";
+    
+    var_dump($puntos);
+    imprimirPuntos($puntos);
+    echo "<br><br>";
+    usort($puntos, "cmp");
+    imprimirPuntos($puntos);
+    echo "<br><br>";
+
+    return $puntos;
+}
+
+function cmpBoolteadont($a, $b){
+    return $a->getDAC()-$b->getDAC();
+}
+
+function cmpBoolteado($a, $b){
+    return cmpBoolteadont($b, $a);
+
+}
+
+function cmp($a, $b){
+    return $a->getAngle()-$b->getAngle();
+}
+
+function imprimirPuntos($puntos){
+    for ($i=0; $i < count($puntos); $i++) { 
+        echo $puntos[$i]->x.", ".$puntos[$i]->y."<br>";
+    }
+}
 ?>

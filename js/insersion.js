@@ -180,3 +180,77 @@ function generarCambioB(){
     
     document.getElementById('identificador').innerHTML = formulario;
 }
+
+function generarPuntos(){
+    let m = document.forms["poner"]["cdp"].value;
+    let formulario = "";
+    formulario = "<form action='solucionG.php' method='post'>";
+    
+    formulario += "<input type='hidden' name='cdp' value='"+m+"'><br>";
+    formulario += "<input type='hidden' name='cdt' value='0'><br>";
+    
+    formulario += "<h2>Puntos:<br><br></h2>";
+    for (let i = 0; i < m; i++) {
+        formulario += "(<input type='number' name='1-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;'>, <input type='number' name='2-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;'>)";
+        if(i!=m-1){
+            formulario += "<br><br>";
+        }
+    }
+    formulario += "<br><br>";
+    
+    formulario += "<input type='submit' value='Graficar' class='btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-3'>";
+    formulario += "</form>";
+
+    document.getElementById('identificador').innerHTML = formulario;
+}
+
+function generarTransformacion(){
+    let op = document.forms["poner"]["transformacion"].value;
+    let cdt = document.forms["poner"]["cdt"].value;
+    let formulario = '<input type="hidden" name="t-'+cdt+'" value="'+op+'">';
+
+    switch (op) {
+        case '0':
+            formulario += 'Respecto al eje:';
+            formulario += '<select name="e-'+cdt+'" class="form-select mx-auto" style="width: 15%!important;" align="center">';
+            formulario += '<option value="0">x</option>';
+            formulario += '<option value="1">y</option>';
+            formulario += '</select>';
+            formulario += '<input type="hidden" name="v-'+cdt+'" value="0">';
+            break;
+
+        case '1':
+            formulario += 'Respecto al eje:';
+            formulario += '<select name="e-'+cdt+'" class="form-select mx-auto" style="width: 15%!important;" align="center">';
+            formulario += '<option value="0">x</option>';
+            formulario += '<option value="1">y</option>';
+            formulario += '</select>';
+            formulario += '<br>';
+            formulario += 'Con la constante c = <input type="number" name="v-'+cdt+'" placeholder="Constante c" class="me-2 rounded w-25">';
+            break;
+
+        case '2':
+            formulario += 'Respecto al eje:';
+            formulario += '<select name="e-'+cdt+'" class="form-select mx-auto" style="width: 15%!important;" align="center">';
+            formulario += '<option value="0">x</option>';
+            formulario += '<option value="1">y</option>';
+            formulario += '</select>';
+            formulario += '<br>';
+            formulario += 'Con la constante c = <input type="number" name="v-'+cdt+'" placeholder="Constante c" class="me-2 rounded w-25">';
+            break;
+
+        case '3':
+            formulario += '<input type="hidden" name="e-'+cdt+'" value="0">';
+            formulario += 'Con el angulo (en grados) &theta; = <input type="number" name="v-'+cdt+'" placeholder="Angulo" class="me-2 rounded w-25">';
+            break;
+    
+        default:
+            formulario += 'Ocurrio un error';
+            break;
+    }
+
+    formulario += "<br><br>";
+    formulario += "<input type='submit' value='Transformar' class='btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-3'>";
+
+    document.getElementById('identificador').innerHTML = formulario;
+}

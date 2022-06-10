@@ -17,6 +17,7 @@
         <a href="combinaciones.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Combinaciones lineales</a>
         <a href="nuim.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Nulidad e imagen</a>
         <a href="cambiobase.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Cambio de base</a>
+        <a href="graf.php" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black w-25 m-3">Graficación de transorfmaciones lineales</a>
     </p>
 </body>
 </html>
