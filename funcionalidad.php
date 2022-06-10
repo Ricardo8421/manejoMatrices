@@ -579,6 +579,7 @@ function checarCerosV($arreglo, $m, $n, $variables){
 
 //Funcionalidad graficadora
 function dibujoh($puntosPares){
+    echo "En desarrollo unu";
     $puntos=array();
     $alto=1000;
     $ancho=$alto;
