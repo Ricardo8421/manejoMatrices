@@ -577,12 +577,14 @@ function checarCerosV($arreglo, $m, $n, $variables){
     return $arregloSCV;
 }
 
+
 //Funcionalidad graficadora
 function dibujoh($puntosPares){
-    echo "En desarrollo unu";
     $puntos=array();
     $alto=1000;
     $ancho=$alto;
+
+    $puntosPares=organizar($puntosPares);
 
     $mayorValor=0;
     for ($i=0; $i < count($puntosPares); $i++) { 
@@ -593,7 +595,7 @@ function dibujoh($puntosPares){
             $mayorValor=abs($puntosPares[$i]->y);
         }
     }
-
+    
     //Conseguir la representacion de la coordenada en los ejes
     $puntosPO=array();
     $coordenadax=0;
@@ -611,7 +613,6 @@ function dibujoh($puntosPares){
 
     // var_dump($puntosPO);
     // echo "<br><br>";
-    $puntosPO=organizar($puntosPO);
     // var_dump($puntosPO);
 
     for ($i=0; $i < count($puntosPO); $i++) { 
@@ -647,7 +648,7 @@ function dibujoh($puntosPares){
 class punto{
     public $x;
     public $y;
-    private $centro=NULL;
+    public $centro=NULL;
 
     public function __construct(int $x, int $y){
         $this->x=$x;
@@ -663,7 +664,7 @@ class punto{
     }
 
     public function getAngle(){
-        return atan2($this->y-$this->centro->y, $this->x-$this->centro->x);
+        return atan2($this->y - $this->centro->y, $this->x - $this->centro->x);
     }
 
     public function getDAC(){
@@ -693,18 +694,9 @@ function organizar($puntos){
         $organizar=$organizar."nt";
     }
 
-    imprimirPuntos($puntos);
-    echo "<br><br>";
     usort($puntos, $organizar);
-    imprimirPuntos($puntos);
-    echo "<br><br>";
-    
-    var_dump($puntos);
-    imprimirPuntos($puntos);
-    echo "<br><br>";
+
     usort($puntos, "cmp");
-    imprimirPuntos($puntos);
-    echo "<br><br>";
 
     return $puntos;
 }
@@ -719,12 +711,9 @@ function cmpBoolteado($a, $b){
 }
 
 function cmp($a, $b){
-    return $a->getAngle()-$b->getAngle();
-}
-
-function imprimirPuntos($puntos){
-    for ($i=0; $i < count($puntos); $i++) { 
-        echo $puntos[$i]->x.", ".$puntos[$i]->y."<br>";
+    if ($a->getAngle() == $b->getAngle()) {
+        return 0;
     }
+    return ($a->getAngle() < $b->getAngle()) ? -1 : 1;
 }
 ?>

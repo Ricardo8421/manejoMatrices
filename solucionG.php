@@ -62,6 +62,15 @@ for ($i=0; $i < $cdt; $i++) {
             //Base para graficar
             // echo "<br>";
             $datos = dibujoh($puntos);
+            
+            //A
+            // echo "A<br>";
+            // imprimirPuntos($puntos);
+            // echo "<br>";
+            //B
+            // echo "B<br>";
+            // usort($puntos, "cmp");
+            // imprimirPuntos($puntos);
             echo '<img src="data:image/png;base64, '.base64_encode($datos).'" alt="Grafica 1" style="display: block; margin-left:auto; margin-right:auto;" width=60%>';
             
             for ($i=0; $i < $cdt; $i++) { 
