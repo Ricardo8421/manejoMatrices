@@ -181,26 +181,269 @@ function generarCambioB(){
     document.getElementById('identificador').innerHTML = formulario;
 }
 
-function generarPuntos(){
-    let m = document.forms["poner"]["cdp"].value;
-    let formulario = "";
-    formulario = "<form action='solucionG.php' method='post'>";
+// function generarPuntos(){
+//     let m = document.forms["poner"]["cdp"].value;
+//     let formulario = "";
+//     formulario = "<form action='solucionG.php' method='post'>";
     
-    formulario += "<input type='hidden' name='cdp' value='"+m+"'><br>";
-    formulario += "<input type='hidden' name='cdt' value='0'><br>";
+//     formulario += "<input type='hidden' name='cdp' value='"+m+"'><br>";
+//     formulario += "<input type='hidden' name='cdt' value='0'><br>";
     
-    formulario += "<h2>Puntos:<br><br></h2>";
-    for (let i = 0; i < m; i++) {
-        formulario += "(<input type='number' name='1-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;'>, <input type='number' name='2-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;'>)";
-        if(i!=m-1){
-            formulario += "<br><br>";
-        }
-    }
-    formulario += "<br><br>";
+//     formulario += "<h2>Puntos:<br><br></h2>";
+//     for (let i = 0; i < m; i++) {
+//         formulario += "(<input type='number' name='1-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;'>, <input type='number' name='2-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;'>)";
+//         if(i!=m-1){
+//             formulario += "<br><br>";
+//         }
+//     }
+//     formulario += "<br><br>";
     
-    formulario += "<input type='submit' value='Graficar' class='btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-3'>";
-    formulario += "</form>";
+//     formulario += "<input type='submit' value='Graficar' class='btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-3'>";
+//     formulario += "</form>";
 
+//     document.getElementById('identificador').innerHTML = formulario;
+// }
+
+function agregarPunto(){
+    let cdp = document.forms["puntos"]["cdp"].value;
+    let formulario = "";
+    let x;
+    let y;
+    for (let i = 3; i < cdp; i++) {
+        try{
+            x = document.forms["puntos"]["1-"+i].value;
+        }catch(e){
+            x="";
+        }
+        try{
+            y = document.forms["puntos"]["2-"+i].value;
+        }catch(e){
+            y="";
+        }
+        formulario+="(<input type='number' name='1-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;' value='"+x+"'>, ";
+        formulario+="<input type='number' name='2-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;' value='"+y+"'>)<br><br>";
+    }
+    cdp++;
+    if(cdp<=10){
+        formulario+="(<input type='number' name='1-"+(cdp-1)+"' class='me-2 rounded m-3' style='width: 5%!important;'>, ";
+        formulario+="<input type='number' name='2-"+(cdp-1)+"' class='me-2 rounded m-3' style='width: 5%!important;'>)<br><br>";
+    }else{
+        cdp--;
+    }
+    formulario+='<input type="hidden" name="cdp" value="'+cdp+'">';
+    if(cdp<10){
+        formulario+='<input type="button" value="Agregar punto" onclick="agregarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black">';
+    }
+    formulario+='<input type="button" value="Quitar punto" onclick="quitarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="button" value="Triángulo equilatero" onclick="triangulo()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Cuadrado" onclick="cuadrado()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Pentagono regular" onclick="pentagono()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Estrella" onclick="estrella()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Silueta de gato" onclick="gato()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="submit" value="Graficar" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+
+    document.getElementById('identificador').innerHTML = formulario;
+}
+
+function quitarPunto(){
+    let cdp = document.forms["puntos"]["cdp"].value;
+    let formulario = "";
+    let x;
+    let y;
+    cdp--;
+    if(cdp<3){
+        cdp=3;
+    }
+    for (let i = 3; i < cdp; i++) {
+        try{
+            x = document.forms["puntos"]["1-"+i].value;
+        }catch(e){
+            x="";
+        }
+        try{
+            y = document.forms["puntos"]["2-"+i].value;
+        }catch(e){
+            y="";
+        }
+        formulario+="(<input type='number' name='1-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;' value='"+x+"'>, ";
+        formulario+="<input type='number' name='2-"+i+"' class='me-2 rounded m-3' style='width: 5%!important;' value='"+y+"'>)<br><br>";
+    }
+    formulario+='<input type="hidden" name="cdp" value="'+cdp+'">';
+    formulario+='<input type="button" value="Agregar punto" onclick="agregarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black">';
+    if(cdp>3){
+        formulario+='<input type="button" value="Quitar punto" onclick="quitarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    }
+    formulario+='<br>';
+    formulario+='<input type="button" value="Triángulo equilatero" onclick="triangulo()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Cuadrado" onclick="cuadrado()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Pentagono regular" onclick="pentagono()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Estrella" onclick="estrella()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Silueta de gato" onclick="gato()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="submit" value="Graficar" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    
+    document.getElementById('identificador').innerHTML = formulario;
+}
+
+function triangulo(){
+    document.forms["puntos"]["1-0"].value=1;
+    document.forms["puntos"]["2-0"].value=-1;
+    document.forms["puntos"]["1-1"].value=-1;
+    document.forms["puntos"]["2-1"].value=-1;
+    document.forms["puntos"]["1-2"].value=0;
+    document.forms["puntos"]["2-2"].value=2;
+    let formulario='<input type="hidden" name="cdp" value="3">';
+    formulario+='<input type="button" value="Agregar punto" onclick="agregarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black">';
+    formulario+='<br>';
+    formulario+='<input type="button" value="Triángulo equilatero" onclick="triangulo()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Cuadrado" onclick="cuadrado()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Pentagono regular" onclick="pentagono()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Estrella" onclick="estrella()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Silueta de gato" onclick="gato()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="submit" value="Graficar" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+
+    document.getElementById('identificador').innerHTML = formulario;
+}
+
+function cuadrado(){
+    document.forms["puntos"]["1-0"].value=1;
+    document.forms["puntos"]["2-0"].value=1;
+    document.forms["puntos"]["1-1"].value=1;
+    document.forms["puntos"]["2-1"].value=-1;
+    document.forms["puntos"]["1-2"].value=-1;
+    document.forms["puntos"]["2-2"].value=1;
+    let formulario="(<input type='number' name='1-3' class='me-2 rounded m-3' style='width: 5%!important;' value='-1'>, ";
+    formulario+="<input type='number' name='2-3' class='me-2 rounded m-3' style='width: 5%!important;' value='-1'>)";
+    formulario+="<br><br>";
+    formulario+='<input type="hidden" name="cdp" value="4">';
+    formulario+='<input type="button" value="Agregar punto" onclick="agregarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black">';
+    formulario+='<input type="button" value="Quitar punto" onclick="quitarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="button" value="Triángulo equilatero" onclick="triangulo()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Cuadrado" onclick="cuadrado()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Pentagono regular" onclick="pentagono()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Estrella" onclick="estrella()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Silueta de gato" onclick="gato()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="submit" value="Graficar" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    
+    document.getElementById('identificador').innerHTML = formulario;
+}
+
+function pentagono(){
+    document.forms["puntos"]["1-0"].value=0;
+    document.forms["puntos"]["2-0"].value=4;
+    document.forms["puntos"]["1-1"].value=4;
+    document.forms["puntos"]["2-1"].value=1;
+    document.forms["puntos"]["1-2"].value=2;
+    document.forms["puntos"]["2-2"].value=-3;
+    let formulario="(<input type='number' name='1-3' class='me-2 rounded m-3' style='width: 5%!important;' value='-2'>, ";
+    formulario+="<input type='number' name='2-3' class='me-2 rounded m-3' style='width: 5%!important;' value='-3'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-4' class='me-2 rounded m-3' style='width: 5%!important;' value='-4'>, ";
+    formulario+="<input type='number' name='2-4' class='me-2 rounded m-3' style='width: 5%!important;' value='1'>)";
+    formulario+="<br><br>";
+    formulario+='<input type="hidden" name="cdp" value="5">';
+    formulario+='<input type="button" value="Agregar punto" onclick="agregarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black">';
+    formulario+='<input type="button" value="Quitar punto" onclick="quitarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="button" value="Triángulo equilatero" onclick="triangulo()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Cuadrado" onclick="cuadrado()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Pentagono regular" onclick="pentagono()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Estrella" onclick="estrella()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Silueta de gato" onclick="gato()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="submit" value="Graficar" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    
+    document.getElementById('identificador').innerHTML = formulario;
+}
+
+function estrella(){
+    document.forms["puntos"]["1-0"].value=0;
+    document.forms["puntos"]["2-0"].value=16;
+    document.forms["puntos"]["1-1"].value=15;
+    document.forms["puntos"]["2-1"].value=3;
+    document.forms["puntos"]["1-2"].value=8;
+    document.forms["puntos"]["2-2"].value=-12;
+    let formulario="(<input type='number' name='1-3' class='me-2 rounded m-3' style='width: 5%!important;' value='-8'>, ";
+    formulario+="<input type='number' name='2-3' class='me-2 rounded m-3' style='width: 5%!important;' value='-12'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-4' class='me-2 rounded m-3' style='width: 5%!important;' value='-15'>, ";
+    formulario+="<input type='number' name='2-4' class='me-2 rounded m-3' style='width: 5%!important;' value='3'>)";
+    formulario+="<br><br>";
+
+    formulario+="(<input type='number' name='1-5' class='me-2 rounded m-3' style='width: 5%!important;' value='5'>, ";
+    formulario+="<input type='number' name='2-5' class='me-2 rounded m-3' style='width: 5%!important;' value='6'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-6' class='me-2 rounded m-3' style='width: 5%!important;' value='-5'>, ";
+    formulario+="<input type='number' name='2-6' class='me-2 rounded m-3' style='width: 5%!important;' value='6'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-7' class='me-2 rounded m-3' style='width: 5%!important;' value='-7'>, ";
+    formulario+="<input type='number' name='2-7' class='me-2 rounded m-3' style='width: 5%!important;' value='-2'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-8' class='me-2 rounded m-3' style='width: 5%!important;' value='7'>, ";
+    formulario+="<input type='number' name='2-8' class='me-2 rounded m-3' style='width: 5%!important;' value='-2'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-9' class='me-2 rounded m-3' style='width: 5%!important;' value='0'>, ";
+    formulario+="<input type='number' name='2-9' class='me-2 rounded m-3' style='width: 5%!important;' value='-6'>)";
+    formulario+="<br><br>";
+
+    formulario+='<input type="hidden" name="cdp" value="10">';
+    formulario+='<input type="button" value="Quitar punto" onclick="quitarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="button" value="Triángulo equilatero" onclick="triangulo()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Cuadrado" onclick="cuadrado()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Pentagono regular" onclick="pentagono()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Estrella" onclick="estrella()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Silueta de gato" onclick="gato()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="submit" value="Graficar" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    
+    document.getElementById('identificador').innerHTML = formulario;
+}
+
+function gato(){
+    document.forms["puntos"]["1-0"].value=-4;
+    document.forms["puntos"]["2-0"].value=4;
+    document.forms["puntos"]["1-1"].value=3;
+    document.forms["puntos"]["2-1"].value=4;
+    document.forms["puntos"]["1-2"].value=0;
+    document.forms["puntos"]["2-2"].value=-3;
+    let formulario="(<input type='number' name='1-3' class='me-2 rounded m-3' style='width: 5%!important;' value='-9'>, ";
+    formulario+="<input type='number' name='2-3' class='me-2 rounded m-3' style='width: 5%!important;' value='0'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-4' class='me-2 rounded m-3' style='width: 5%!important;' value='-6'>, ";
+    formulario+="<input type='number' name='2-4' class='me-2 rounded m-3' style='width: 5%!important;' value='2'>)";
+    formulario+="<br><br>";
+
+    formulario+="(<input type='number' name='1-5' class='me-2 rounded m-3' style='width: 5%!important;' value='-2'>, ";
+    formulario+="<input type='number' name='2-5' class='me-2 rounded m-3' style='width: 5%!important;' value='3'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-6' class='me-2 rounded m-3' style='width: 5%!important;' value='1'>, ";
+    formulario+="<input type='number' name='2-6' class='me-2 rounded m-3' style='width: 5%!important;' value='3'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-7' class='me-2 rounded m-3' style='width: 5%!important;' value='5'>, ";
+    formulario+="<input type='number' name='2-7' class='me-2 rounded m-3' style='width: 5%!important;' value='2'>)";
+    formulario+="<br><br>";
+    formulario+="(<input type='number' name='1-8' class='me-2 rounded m-3' style='width: 5%!important;' value='8'>, ";
+    formulario+="<input type='number' name='2-8' class='me-2 rounded m-3' style='width: 5%!important;' value='0'>)";
+    formulario+="<br><br>";
+
+    formulario+='<input type="hidden" name="cdp" value="9">';
+    formulario+='<input type="button" value="Agregar punto" onclick="agregarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black">';
+    formulario+='<input type="button" value="Quitar punto" onclick="quitarPunto()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="button" value="Triángulo equilatero" onclick="triangulo()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Cuadrado" onclick="cuadrado()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Pentagono regular" onclick="pentagono()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Estrella" onclick="estrella()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<input type="button" value="Silueta de gato" onclick="gato()" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    formulario+='<br>';
+    formulario+='<input type="submit" value="Graficar" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black m-1">';
+    
     document.getElementById('identificador').innerHTML = formulario;
 }
 
